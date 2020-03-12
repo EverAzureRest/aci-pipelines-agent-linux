@@ -1,0 +1,61 @@
+{
+"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "ContainerGroupName": {
+        "value": "adoagent"
+    },
+    "Image": {
+        "value": "<server/imageName>"
+    },
+    "ImageVersion": {
+        "value": "<imageVersion>"
+    },
+    "ADO_Account": {
+        "value": "https://dev.azure.com/<yourdevopsorg>"
+
+    },
+    "ADO_Token": {
+        "reference":{
+            "keyVault": {
+                "id": "/subscriptions/<subscriptionID>/resourceGroups/<keyVaultResourceGroup>/providers/Microsoft.KeyVault/vaults/<keyVaultName>"
+            },
+            "secretName": "<PAT secret>"
+        }
+    },
+    "ADO_Pool": {
+        "value": "Default"
+    },
+    "vnetName": {
+        "value": "<vNetName>"
+
+    },
+    "subnetName":{
+        "value": "<delegatedsubnetName>"
+    },
+    "vnetResourceGroupName":{
+        "value": ""
+    },
+    "agentCPU":{
+        "value": "1"
+    },
+    "agentMemory":{
+        "value": "3.5"
+    },
+    "containerRegistry":{
+        "value": "<registryFQDN>"
+    },
+    "registryUsername":{
+        "value": "<registryLoginUser>"
+    },
+    "registryPassword":{
+        "reference": {
+            "keyVault": {
+                "id": "/subscriptions/<subscriptionID>/resourceGroups/<keyVaultResourceGroup>/providers/Microsoft.KeyVault/vaults/<keyVaultName>"
+            },
+            "secretName": "<registryPassword>"
+        }
+    }
+
+}
+}

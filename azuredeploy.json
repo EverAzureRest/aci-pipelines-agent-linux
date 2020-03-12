@@ -1,0 +1,138 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ContainerGroupName": {
+            "type":"string",
+            "defaultValue": "adoagent"
+        },
+        "Image":{
+            "type":"string"
+        },
+        "ImageVersion":{
+            "type":"string",
+            "defaultValue":"latest"
+        },
+        "ADO_Account":{
+            "type":"string"
+        },
+        "ADO_Token":{
+            "type":"string"
+        },
+        "ADO_Pool":{
+            "type":"string",
+            "defaultValue":"Default"
+        },
+        "vnetName":{
+            "type":"string"
+        },
+        "subnetName":{
+            "type":"string"
+        },
+        "vnetResourceGroupName":{
+            "type":"string"
+        },
+        "agentCPU":{
+            "type":"string"
+        },
+        "agentMemory":{
+            "type":"string"
+        },
+        "containerRegistry":{
+            "type":"string"
+        },
+        "registryUsername":{
+            "type":"string"
+        },
+        "registryPassword":{
+            "type":"string"
+        },
+        "containerNetworkProfile":{
+            "type":"string",
+            "defaultValue":"adoagentprofile"
+        }
+    
+    },
+    "variables": {
+        "subnetId":"[resourceId(parameters('vnetResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+
+    },
+    "resources": [
+        {
+            "name":"[parameters('containerNetworkProfile')]",
+            "type":"Microsoft.Network/networkProfiles",
+            "apiVersion":"2019-11-01",
+            "location":"[resourceGroup().location]",
+            "properties":{
+                "containerNetworkInterfaceConfigurations":[
+                    {
+                        "name":"eth0",
+                        "properties":{
+                            "ipConfigurations":[
+                                {
+                                    "name":"ipconfig1",
+                                    "properties":{
+                                        "subnet":{
+                                            "id":"[variables('subnetId')]"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+        "name": "[parameters('ContainerGroupName')]",
+        "type": "Microsoft.ContainerInstance/containerGroups",
+        "apiVersion": "2018-10-01",
+        "location": "[resourceGroup().location]",
+        "dependsOn":[
+            "[resourceId('Microsoft.Network/networkProfiles', parameters('containerNetworkProfile'))]"
+        ],
+        "properties": {
+            "containers": [
+                {
+                    "name": "[parameters('ContainerGroupName')]",
+                    "properties": {
+                        "image": "[concat (parameters('Image'), ':', parameters('ImageVersion'))]",
+                        "environmentVariables":[
+                            {
+                                "name":"AZP_URL",
+                                "value":"[parameters('ADO_Account')]"
+                            },
+                            {
+                                "name":"AZP_TOKEN",
+                                "value":"[parameters('ADO_Token')]"
+                            },
+                            {
+                                "name":"AZP_POOL",
+                                "value":"[parameters('ADO_Pool')]"
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "[parameters('agentCPU')]",
+                                "memoryInGB": "[parameters('agentMemory')]"
+                            }
+                        }
+                    }
+                }
+            ],
+            "imageRegistryCredentials":[
+                {
+                    "server":"[parameters('containerRegistry')]",
+                    "username":"[parameters('registryUsername')]",
+                    "password":"[parameters('registryPassword')]"
+                }
+            ],
+            "osType": "Linux",
+            "networkProfile":{
+                "id":"[resourceId('Microsoft.Network/networkProfiles', parameters('containerNetworkProfile'))]"
+            }
+        }
+    }
+    ],
+    "outputs": {}
+}
