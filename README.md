@@ -19,7 +19,7 @@ A subnet in a VNET needs to be delegated to the Azure Container Instance service
 
 This deployment also assumes you have a VNET and Subnet already defined.
 
-```az deployment group create -n <deploymentName> -g <resourceGroup> --template-file ./azuredeploy.json --parameters ./yourparametersfile.json```
+To deploy the agent container to Azure, from the root of the project run: ```az deployment group create -n <deploymentName> -g <resourceGroup> --template-file ./azuredeploy.json --parameters ./yourparametersfile.json```
 
 ### To Do
 
