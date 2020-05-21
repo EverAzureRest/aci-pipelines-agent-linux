@@ -20,7 +20,7 @@
             "keyVault": {
                 "id": "/subscriptions/<subscriptionID>/resourceGroups/<keyVaultResourceGroup>/providers/Microsoft.KeyVault/vaults/<keyVaultName>"
             },
-            "secretName": "<PAT secret>"
+            "secretName": "<PAT secret name>"
         }
     },
     "ADO_Pool": {
@@ -53,7 +53,7 @@
             "keyVault": {
                 "id": "/subscriptions/<subscriptionID>/resourceGroups/<keyVaultResourceGroup>/providers/Microsoft.KeyVault/vaults/<keyVaultName>"
             },
-            "secretName": "<registryPassword>"
+            "secretName": "<registry Password secret name>"
         }
     }
 
