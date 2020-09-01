@@ -5,8 +5,11 @@
     "ContainerGroupName": {
         "value": "adoagent"
     },
+    "numberOfInstances": {
+        "value": 10
+    },
     "Image": {
-        "value": "<server/imageName>"
+        "value": "<server.fqdn/imageName>"
     },
     "ImageVersion": {
         "value": "<imageVersion>"
