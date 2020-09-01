@@ -6,6 +6,13 @@
             "type":"string",
             "defaultValue": "adoagent"
         },
+        "numberOfInstances": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Number of Agent Containers to create"
+            }
+        },
         "Image":{
             "type":"string"
         },
@@ -84,17 +91,21 @@
             }
         },
         {
-        "name": "[parameters('ContainerGroupName')]",
+        "name": "[concat(parameters('ContainerGroupName'), copyIndex())]",
         "type": "Microsoft.ContainerInstance/containerGroups",
         "apiVersion": "2018-10-01",
         "location": "[resourceGroup().location]",
+        "copy": {
+            "count": "[parameters('numberOfInstances')]",
+            "name": "containerLoop"
+        },
         "dependsOn":[
             "[resourceId('Microsoft.Network/networkProfiles', parameters('containerNetworkProfile'))]"
         ],
         "properties": {
             "containers": [
                 {
-                    "name": "[parameters('ContainerGroupName')]",
+                    "name": "[concat(parameters('ContainerGroupName'), copyIndex())]",
                     "properties": {
                         "image": "[concat (parameters('Image'), ':', parameters('ImageVersion'))]",
                         "environmentVariables":[
