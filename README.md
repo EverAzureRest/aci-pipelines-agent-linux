@@ -6,22 +6,31 @@ Reference Article: https://docs.microsoft.com/en-us/azure/devops/pipelines/agent
 
 ## About
 
-This project will build a docker container for an Azure Pipelines Self-Hosted Linux Agent which can be deployed to Azure Container Instances in a private VNET using the provided template.
+This project will build a docker container for an Azure DevOps Pipelines Self-Hosted Linux Agent which can be deployed to Azure Container Instances in a private VNET using the provided template.
+
+This allows you to manage and update your Self Hosted agents as a set of ephimeral compute, yet can still reach inside the VNET to utilize internal pipeline integrations.  
 
 ## How to use
 
-Build the dockerfile in the ./docker folder and push it to a container registry.
+Issue a Azure DevOps PAT by following this article: https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows 
 
-If Azure-Cli is installed and you are using an Azure Container Registry, from the docker folder run ```az acr build -t <registryserver.fqdn/imagename:tag> -r <registryuser> .```
-This will build and push the image directly to the registry.
+Copy the PAT and save it in an Azure KeyVault as a Secret:
+```bash
+az keyvault secret set -n <secretName> --vault-name <keyVault Name> --value <PAT token value>
+```
+Make sure you denote the Key Vault Secret Name as it will be used as a parameter in the template deployment
 
-These templates assume Admin is enabled on the ACR registry or you have a direct login to your registry.  The given parameters file assumes using Azure Keyvault to store the secrets for both the Registry login and the AzureDevops PAT.  
+Note: <b>Ensure your PAT has access to write agent pools</b>
 
-A subnet in a VNET needs to be delegated to the Azure Container Instance service for the VNET integration to work.  This can be done via the subnet view in the Portal, or any other method, but the subnet must be empty, so I recommend creating a new subnet in an existing VNET, or an entirely new VNET.  /
+The included Bicep template will build a container registry and a container image based on the published DOCKERFILE in this repository. It will automatically push the image to the container registry. 
 
-This deployment also assumes you have a VNET and Subnet already defined.
+A subnet in a VNET needs to be delegated to the Azure Container Instance service for the VNET integration to work.  The template assumes you have a VNET already.  It will create a subnet to delegate the Container Instance service the correct permissions so the VNET integration will work.  You can reference an existing subnet as well.
 
-To deploy the agent container to Azure, from the root of the project run: ```az deployment group create -n <deploymentName> -g <resourceGroup> --template-file ./azuredeploy.json --parameters ./yourparametersfile.json```
+To deploy the agent containers to Azure, from the root of the project run: 
+```bash
+az deployment group create -n <deploymentName> -g <resourceGroup> --template-file ./main.bicep --parameters ./yourparametersfile.json
+```
+An example parameters file is included in this repository
 
 ### To Do
 
