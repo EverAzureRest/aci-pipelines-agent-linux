@@ -1,10 +1,12 @@
 # aci-pipelines-agent-linux
 
-Azure DevOps Pipelines Linux Agent in Azure Container Instance with basic private VNET connectivity
+Azure DevOps Pipelines Self-Hosted Linux Agent in Azure Container Instance with basic private VNET connectivity
+
+Reference Article: https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops#linux
 
 ## About
 
-This project will build a docker container for an Azure Pipelines Linux Agent which can be deployed to Azure Container Instances in a private VNET using the provided template.
+This project will build a docker container for an Azure Pipelines Self-Hosted Linux Agent which can be deployed to Azure Container Instances in a private VNET using the provided template.
 
 ## How to use
 
@@ -23,4 +25,4 @@ To deploy the agent container to Azure, from the root of the project run: ```az 
 
 ### To Do
 
-Windows Version
+Windows Version awaiting VNET integration for Windows Containers
