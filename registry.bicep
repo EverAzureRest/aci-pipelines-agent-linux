@@ -10,43 +10,42 @@ param dockerSourceRepo string
 
 param branch string
 
+param image string
+
+param imageVersion string
+
 resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   name: containerRegistryName
   location: location
   sku: {
     name: registrySku
   }
+  properties: {
+    adminUserEnabled: true
+    networkRuleBypassOptions: 'AzureServices'
+    publicNetworkAccess: 'Enabled'
+  }
 }
 
-resource buildTask 'Microsoft.ContainerRegistry/registries/buildTasks@2018-02-01-preview' = {
-  name: 'BuildTask'
+resource quickBuild 'Microsoft.ContainerRegistry/registries/taskRuns@2019-06-01-preview' = {
+  name: 'quickBuild'
   parent: registry
   location: location
   properties: {
-    alias: 'buildADOAgent'
-    platform: {
-      cpu: 1
-      osType: 'Linux'
-    }
-    sourceRepository: {
-      repositoryUrl: dockerSourceRepo
-      sourceControlType: 'Github'
+    runRequest: {
+      type: 'DockerBuildRequest'
+      platform: {
+        os: 'Linux'
+      }
+      dockerFilePath: 'Dockerfile'
+      sourceLocation: '${dockerSourceRepo}#${branch}:docker'
+      imageNames: [
+        '${registry.properties.loginServer}/${image}:${imageVersion}'
+      ]
+      isPushEnabled: true
     }
   }
 }
 
-resource buildStep 'Microsoft.ContainerRegistry/registries/buildTasks/steps@2018-02-01-preview' = {
-  name: 'ADOAgentBuild'
-  parent: buildTask
-  properties: {
-    type: 'Docker'
-    branch: branch
-    dockerFilePath: '/docker'
-    imageNames: [
-      '${registry.properties.loginServer}/adoshagent'
-    ]
-    isPushEnabled: true
-  }
-}
+output image string = quickBuild.properties.runRequest.imageNames[0]
 
-output image string = buildStep.properties.imageNames[0]

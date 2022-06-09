@@ -9,55 +9,58 @@
         "value": 10
     },
     "Image": {
-        "value": "<server.fqdn/imageName>"
+        "value": "<imageName>"
     },
     "ImageVersion": {
         "value": "<imageVersion>"
     },
     "ADO_Account": {
         "value": "https://dev.azure.com/<yourdevopsorg>"
-
-    },
-    "ADO_Token": {
-        "reference":{
-            "keyVault": {
-                "id": "/subscriptions/<subscriptionID>/resourceGroups/<keyVaultResourceGroup>/providers/Microsoft.KeyVault/vaults/<keyVaultName>"
-            },
-            "secretName": "<PAT secret name>"
-        }
     },
     "ADO_Pool": {
-        "value": "Default"
+        "value": "<ADO Pool Name>"
+    },
+    "keyVaultName":{
+        "value": "<name of the keyvault"
+    },
+    "keyVaultRG":{
+        "value": "<key vault resource group name>"
+    },
+    "secretName":{
+        "value": "<secret name for the ADO PAT>"
     },
     "vnetName": {
         "value": "<vNetName>"
-
+    },
+    "vnetRGName":{
+        "value": "<Name of the VNET Resource Group>"
     },
     "subnetName":{
         "value": "<delegatedsubnetName>"
     },
     "vnetResourceGroupName":{
-        "value": ""
+        "value": "<vnet Resource Group>"
+    },
+    "subnetPrefix":{
+        "value": "<Subnet CIDR PRefix"
     },
     "agentCPU":{
-        "value": "1"
+        "value": 1
     },
-    "agentMemory":{
-        "value": "3.5"
+    "agentMem":{
+        "value": 3
     },
-    "containerRegistry":{
-        "value": "<registryFQDN>"
+    "containerRegistryName":{
+        "value": "<registry Name>"
     },
-    "registryUsername":{
-        "value": "<registryLoginUser>"
+    "containerRegistryRG":{
+        "value": "<registry Resource Group>"
     },
-    "registryPassword":{
-        "reference": {
-            "keyVault": {
-                "id": "/subscriptions/<subscriptionID>/resourceGroups/<keyVaultResourceGroup>/providers/Microsoft.KeyVault/vaults/<keyVaultName>"
-            },
-            "secretName": "<registry Password secret name>"
-        }
+    "sourceBranch":{
+        "value": "master"
+    },
+    "dockerSourceRepo": {
+        "value": "https://github.com/everazurerest/aci-pipelines-agent-linux.git"
     }
 
 }

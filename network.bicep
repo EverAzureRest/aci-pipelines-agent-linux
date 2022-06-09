@@ -19,7 +19,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' = {
     addressPrefix: subnetPrefix
     delegations: [
       {
-        id: resourceId('Microsoft.Network', vnetName, 'subnets', subnetName, 'delegations', delegationName)
+        //id: resourceId('Microsoft.Network', vnetName, 'subnets', subnetName, 'delegations', delegationName)
         name: delegationName
         properties: {
           serviceName: 'Microsoft.ContainerInstance/containerGroups'
