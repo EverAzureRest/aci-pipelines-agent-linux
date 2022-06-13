@@ -2,9 +2,9 @@ targetScope = 'resourceGroup'
 
 param containerRegistryName string
 
-param registrySku string = 'Basic'
+param registrySku string 
 
-param location string = resourceGroup().location
+param location string 
 
 param dockerSourceRepo string
 
