@@ -60,8 +60,6 @@ param sourceBranch string = 'master'
 @description('URI to the code repository with the Dockerfile - define or change if forked')
 param dockerSourceRepo string = 'https://github.com/everazurerest/aci-pipelines-agent-linux.git'
 
-
-
 module network 'network.bicep' = {
   name: 'NetworkDeployment'
   scope: resourceGroup(vnetRGName)
@@ -75,16 +73,6 @@ module network 'network.bicep' = {
 resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
   name: keyVaultName
   scope: resourceGroup(keyVaultRG)
-}
-
-resource adoPATSecret 'Microsoft.KeyVault/vaults/secrets@2021-10-01' existing = {
-  name: secretName
-  parent: keyVault
-}
-
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
-  name: containerRegistryName
-  scope: resourceGroup(containerRegistryRG)
 }
 
 module registry 'registry.bicep' =  {
