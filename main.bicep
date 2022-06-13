@@ -51,6 +51,9 @@ param containerRegistryName string
 @description('Resource Group of the Container Registry')
 param containerRegistryRG string 
 
+@description('Container Registry SKU')
+param registrySKU string = 'Basic'
+
 @description('Deployment Region')
 param location string = resourceGroup().location
 
@@ -80,7 +83,7 @@ module registry 'registry.bicep' =  {
   scope: resourceGroup(containerRegistryRG)
   params: {
     containerRegistryName: containerRegistryName
-    registrySku: 'Basic'
+    registrySku: registrySKU
     location: location
     dockerSourceRepo:dockerSourceRepo
     branch: sourceBranch
