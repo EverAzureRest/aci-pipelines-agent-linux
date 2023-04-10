@@ -38,9 +38,6 @@
     "subnetName":{
         "value": "<delegatedsubnetName>"
     },
-    "vnetResourceGroupName":{
-        "value": "<vnet Resource Group>"
-    },
     "subnetPrefix":{
         "value": "<Subnet CIDR PRefix"
     },
